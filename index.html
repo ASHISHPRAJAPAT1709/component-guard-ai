@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComponentGuard AI | ISRO SIH26170 Screening Intelligence</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .kpi-fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      transition: width 0.35s ease;
+    }
+    .kpi-fill-total { width: 100%; background: #4facfe; }
+    .kpi-fill-normal { width: 82%; background: #00e676; }
+    .kpi-fill-risk { width: 13%; background: #ffb300; }
+    .kpi-fill-anomaly { width: 5%; background: #ff3366; }
+  </style>
+</head>
+<body class="aerospace-theme">
+
+  <!-- ========================================================
+       TOP HEADER (ISRO & SIH26170 Identification)
+       ======================================================== -->
+  <header class="top-header" role="banner">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="logo-emblem">
+          <svg viewBox="0 0 40 40" class="isro-orbit-icon" aria-hidden="true">
+            <circle cx="20" cy="20" r="17" fill="none" stroke="rgba(0, 245, 212, 0.25)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="20" cy="20" r="12" fill="none" stroke="#00f5d4" stroke-width="2"/>
+            <circle cx="20" cy="20" r="5" fill="#00a8ff"/>
+            <path d="M 6 20 Q 20 5 34 20 Q 20 35 6 20" fill="none" stroke="#4facfe" stroke-width="1.5" opacity="0.8"/>
+            <circle cx="34" cy="20" r="2.5" fill="#00f5d4"/>
+          </svg>
+        </div>
+        <div class="header-title-group">
+          <div class="brand-title">
+            <span class="brand-name">ComponentGuard</span>
+            <span class="brand-badge">AI</span>
+            <span class="brand-subline">v2.4-PROTOTYPE</span>
+          </div>
+          <p class="brand-tagline">Dynamic Anomaly Detection & Predictive Drift Intelligence</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="meta-tag">
+          <span class="meta-label">CHALLENGE</span>
+          <span class="meta-value accent-cyan">SIH26170</span>
+        </div>
+        <div class="meta-tag">
+          <span class="meta-label">ORGANIZATION</span>
+          <span class="meta-value accent-blue">ISRO</span>
+        </div>
+        <div class="meta-tag">
+          <span class="meta-label">THEME</span>
+          <span class="meta-value">Smart Automation</span>
+        </div>
+        <div class="system-status-indicator" title="Screening telemetry daemon active">
+          <span class="status-pulse-dot"></span>
+          <span class="status-label">SYSTEM STATUS: <strong>ONLINE</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       LIVE WORKFLOW STEPPER INDICATOR
+       ======================================================== -->
+  <section class="workflow-stepper-bar" aria-label="Screening Workflow Progress">
+    <div class="workflow-container">
+      <div class="workflow-status-text" id="workflowStatusText">
+        <span class="pulse-ring"></span>
+        <span id="pipelineStatusMessage">Pipeline Ready • Select scenario or component to analyze</span>
+      </div>
+
+      <div class="workflow-steps" id="workflowSteps">
+        <div class="step-node active" data-step="1" id="stepNode1">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-name">DATA</div>
+            <div class="step-sub">Telemetry Ingestion</div>
+          </div>
+        </div>
+        <div class="step-connector" id="connector1"></div>
+
+        <div class="step-node" data-step="2" id="stepNode2">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-name">VALIDATION</div>
+            <div class="step-sub">Integrity & Limits</div>
+          </div>
+        </div>
+        <div class="step-connector" id="connector2"></div>
+
+        <div class="step-node" data-step="3" id="stepNode3">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-name">ANOMALY</div>
+            <div class="step-sub">Peer Baseline Shift</div>
+          </div>
+        </div>
+        <div class="step-connector" id="connector3"></div>
+
+        <div class="step-node" data-step="4" id="stepNode4">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-name">PREDICTION</div>
+            <div class="step-sub">168h Drift Vector</div>
+          </div>
+        </div>
+        <div class="step-connector" id="connector4"></div>
+
+        <div class="step-node" data-step="5" id="stepNode5">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-name">RISK</div>
+            <div class="step-sub">Explainable Scoring</div>
+          </div>
+        </div>
+        <div class="step-connector" id="connector5"></div>
+
+        <div class="step-node" data-step="6" id="stepNode6">
+          <div class="step-num">06</div>
+          <div class="step-body">
+            <div class="step-name">QA</div>
+            <div class="step-sub">Human Decision</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       PRIMARY ENGINEERING CONTROLS BAR
+       ======================================================== -->
+  <section class="controls-toolbar" aria-label="Demo and Analysis Controls">
+    <div class="controls-container">
+      
+      <!-- Demo Scenario Preset -->
+      <div class="control-group">
+        <label for="scenarioSelector" class="control-label">
+          <span class="control-icon">⚡</span> DEMO SCENARIO
+        </label>
+        <select id="scenarioSelector" class="control-select accent-select" aria-label="Demo Scenario Selection">
+          <option value="scenario_normal">1. NORMAL COMPONENT (CG-001)</option>
+          <option value="scenario_peer_anomaly" selected>2. PEER ANOMALY (CG-002: Below limit, High peer shift)</option>
+          <option value="scenario_high_drift">3. HIGH DRIFT (CG-003: Predicted threshold crossing)</option>
+          <option value="scenario_combined">4. ANOMALY + HIGH DRIFT (CG-004: Critical compounding)</option>
+        </select>
+      </div>
+
+      <!-- Component Selection -->
+      <div class="control-group">
+        <label for="componentSelector" class="control-label">
+          <span class="control-icon">🔍</span> SELECT COMPONENT
+        </label>
+        <select id="componentSelector" class="control-select">
+          <option value="CG-001">CG-001 (Lot A01)</option>
+          <option value="CG-002" selected>CG-002 (Lot A01)</option>
+          <option value="CG-003">CG-003 (Lot A01)</option>
+          <option value="CG-004">CG-004 (Lot B02)</option>
+          <option value="CG-005">CG-005 (Lot B02)</option>
+        </select>
+      </div>
+
+      <!-- Parameter Selection -->
+      <div class="control-group">
+        <label for="paramSelector" class="control-label">
+          <span class="control-icon">📊</span> SELECT PARAMETER
+        </label>
+        <select id="paramSelector" class="control-select">
+          <option value="leakage" selected>Leakage Current (µA)</option>
+          <option value="iddq">Standby Current Iddq (mA)</option>
+          <option value="prop_delay">Propagation Delay (ns)</option>
+          <option value="voh">Output High Voltage Voh (V)</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="actions-group">
+        <button id="runAnalysisBtn" class="btn btn-primary" title="Execute dynamic anomaly & drift calculation">
+          <span class="btn-icon">▶</span>
+          <span class="btn-text">RUN ANALYSIS</span>
+        </button>
+
+        <label for="csvFileInput" class="btn btn-secondary" title="Upload custom burn-in telemetry CSV">
+          <span class="btn-icon">📂</span>
+          <span class="btn-text">IMPORT CSV</span>
+        </label>
+        <input type="file" id="csvFileInput" accept=".csv" class="sr-only">
+
+        <button id="loadSampleBtn" class="btn btn-secondary" title="Restore default ISRO burn-in dataset">
+          <span class="btn-icon">↺</span>
+          <span class="btn-text">LOAD SAMPLE DATA</span>
+        </button>
+
+        <button id="resetDemoBtn" class="btn btn-outline" title="Reset all demo states">
+          <span class="btn-icon">⟲</span>
+          <span class="btn-text">RESET DEMO</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION NAVIGATION TABS
+       ======================================================== -->
+  <nav class="sub-nav-tabs" aria-label="Section Navigation">
+    <div class="tabs-container">
+      <button class="nav-tab active" data-target="section-overview">
+        <span class="tab-dot"></span>
+        <span class="tab-label">Overview</span>
+      </button>
+      <button class="nav-tab" data-target="section-burnin">
+        <span class="tab-dot"></span>
+        <span class="tab-label">Burn-In Data</span>
+      </button>
+      <button class="nav-tab" data-target="section-anomaly">
+        <span class="tab-dot"></span>
+        <span class="tab-label">Anomaly Detection</span>
+      </button>
+      <button class="nav-tab" data-target="section-drift">
+        <span class="tab-dot"></span>
+        <span class="tab-label">Drift Prediction</span>
+      </button>
+      <button class="nav-tab" data-target="section-qa">
+        <span class="tab-dot"></span>
+        <span class="tab-label">QA Decision</span>
+      </button>
+      <button class="nav-tab" data-target="section-methodology">
+        <span class="tab-dot"></span>
+        <span class="tab-label">Model & Methodology</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       MAIN CONTENT CONTAINER
+       ======================================================== -->
+  <main class="main-dashboard-content">
+
+    <!-- ========================================================
+         SECTION 1 — OVERVIEW
+         ======================================================== -->
+    <section id="section-overview" class="dashboard-section active-section">
+      
+      <!-- Hero Banner -->
+      <div class="overview-hero-card">
+        <div class="hero-left">
+          <div class="tech-sub-tag">SCREENING INTELLIGENCE SUITE</div>
+          <h1 class="hero-heading">Component Burn-In Intelligence</h1>
+          <p class="hero-subtitle">
+            Detect abnormal behaviour. Predict parameter drift. Support earlier QA decisions.
+          </p>
+          <div class="hero-compliance-badges">
+            <span class="compliance-pill">MIL-STD-883K Method 1015</span>
+            <span class="compliance-pill">ISRO Screening Standard</span>
+            <span class="compliance-pill">High-Reliability Space Grade</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="active-focus-card">
+            <div class="focus-title">CURRENT ACTIVE TARGET</div>
+            <div class="focus-id" id="overviewFocusId">CG-002</div>
+            <div class="focus-lot" id="overviewFocusLot">Lot: LOT-A01 • Param: Leakage Current</div>
+            <div class="focus-status-tag" id="overviewFocusStatus">EVALUATION IN PROGRESS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card" id="kpiTotalCard">
+          <div class="kpi-header">
+            <span class="kpi-title">TOTAL COMPONENTS</span>
+            <span class="kpi-icon">📦</span>
+          </div>
+          <div class="kpi-value" id="kpiTotalVal">100</div>
+          <div class="kpi-subtext">Active screening batch</div>
+          <div class="kpi-bar"><div class="kpi-fill kpi-fill-total"></div></div>
+        </div>
+
+        <div class="kpi-card" id="kpiNormalCard">
+          <div class="kpi-header">
+            <span class="kpi-title">NORMAL</span>
+            <span class="kpi-icon">✓</span>
+          </div>
+          <div class="kpi-value kpi-normal" id="kpiNormalVal">82</div>
+          <div class="kpi-subtext">Within tight peer band</div>
+          <div class="kpi-bar"><div class="kpi-fill kpi-fill-normal"></div></div>
+        </div>
+
+        <div class="kpi-card" id="kpiRiskCard">
+          <div class="kpi-header">
+            <span class="kpi-title">AT RISK</span>
+            <span class="kpi-icon">⚠</span>
+          </div>
+          <div class="kpi-value kpi-warning" id="kpiRiskVal">13</div>
+          <div class="kpi-subtext">Marginal drift or shift</div>
+          <div class="kpi-bar"><div class="kpi-fill kpi-fill-risk"></div></div>
+        </div>
+
+        <div class="kpi-card" id="kpiAnomalyCard">
+          <div class="kpi-header">
+            <span class="kpi-title">ANOMALOUS</span>
+            <span class="kpi-icon">⚡</span>
+          </div>
+          <div class="kpi-value kpi-danger" id="kpiAnomalyVal">5</div>
+          <div class="kpi-subtext">Severe peer deviation</div>
+          <div class="kpi-bar"><div class="kpi-fill kpi-fill-anomaly"></div></div>
+        </div>
+      </div>
+
+      <!-- Dual Panel: Pipeline Flow + Live System Monitor -->
+      <div class="overview-dual-grid">
+        
+        <!-- LEFT: Burn-In Screening Pipeline -->
+        <div class="panel-card pipeline-card">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-glyph">❖</span>
+              <h2 class="panel-title">Burn-In Screening Pipeline</h2>
+            </div>
+            <span class="panel-badge">ISRO COMPLIANT FLOW</span>
+          </div>
+          <div class="pipeline-visual-container">
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4" y="4" width="16" height="16" rx="2"/>
+                  <rect x="9" y="9" width="6" height="6"/>
+                  <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">Component</div>
+                <div class="pipeline-desc">Semiconductor Wafer / IC</div>
+              </div>
+            </div>
+            <div class="pipeline-arrow-conn">
+              <div class="conn-dot"></div>
+            </div>
+
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">Burn-In Test</div>
+                <div class="pipeline-desc">125°C Thermal Stress</div>
+              </div>
+            </div>
+            <div class="pipeline-arrow-conn">
+              <div class="conn-dot"></div>
+            </div>
+
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">Data Validation</div>
+                <div class="pipeline-desc">Sanity & Limit Check</div>
+              </div>
+            </div>
+            <div class="pipeline-arrow-conn">
+              <div class="conn-dot"></div>
+            </div>
+
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle highlight-cyan">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                  <path d="M12 2a10 10 0 0 1 10 10h-10V2z" opacity="0.3"/>
+                  <circle cx="12" cy="12" r="4"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">AI Analysis</div>
+                <div class="pipeline-desc">Dynamic Peer Baseline</div>
+              </div>
+            </div>
+            <div class="pipeline-arrow-conn">
+              <div class="conn-dot"></div>
+            </div>
+
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle highlight-amber">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">Risk Detection</div>
+                <div class="pipeline-desc">Drift Extrapolation</div>
+              </div>
+            </div>
+            <div class="pipeline-arrow-conn">
+              <div class="conn-dot"></div>
+            </div>
+
+            <div class="pipeline-item">
+              <div class="pipeline-icon-circle highlight-green">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="8.5" cy="7" r="4"/>
+                  <line x1="20" y1="8" x2="20" y2="14"/>
+                  <line x1="23" y1="11" x2="17" y2="11"/>
+                </svg>
+              </div>
+              <div class="pipeline-text">
+                <div class="pipeline-name">QA Decision</div>
+                <div class="pipeline-desc">Human-in-the-Loop</div>
+              </div>
+            </div>
+          </div>
+          <div class="pipeline-note">
+            <span class="note-icon">ℹ</span>
+            <span>All screening telemetry flows deterministically through peer comparative isolation prior to human sign-off.</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Live System Monitor -->
+        <div class="panel-card monitor-card">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-glyph">⚡</span>
+              <h2 class="panel-title">Live System Monitor</h2>
+            </div>
+            <span class="panel-live-pill"><span class="tiny-pulse"></span> RUNNING</span>
+          </div>
+          <div class="monitor-list">
+            <div class="monitor-row">
+              <span class="monitor-label">Data Stream</span>
+              <span class="monitor-status status-active">
+                <span class="status-dot green"></span> ACTIVE (100Hz Poll)
+              </span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-label">Model Status</span>
+              <span class="monitor-status status-ready">
+                <span class="status-dot cyan"></span> READY (Heuristic v2)
+              </span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-label">Anomaly Engine</span>
+              <span class="monitor-status status-active">
+                <span class="status-dot green"></span> ACTIVE (Peer Normalizer)
+              </span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-label">Drift Predictor</span>
+              <span class="monitor-status status-ready">
+                <span class="status-dot cyan"></span> READY (168h Extrapolator)
+              </span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-label">Last Analysis</span>
+              <span class="monitor-status" id="monitorLastAnalysis">Just now</span>
+            </div>
+            <div class="monitor-row">
+              <span class="monitor-label">Datasheet Guard</span>
+              <span class="monitor-status status-enforced">
+                <span class="status-dot blue"></span> ENFORCED (50.0 µA Limit)
+              </span>
+            </div>
+          </div>
+
+          <div class="monitor-footer-stats">
+            <div class="stat-mini">
+              <div class="stat-mini-val">0.42 ms</div>
+              <div class="stat-mini-lbl">Inference Latency</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-mini-val">99.8%</div>
+              <div class="stat-mini-lbl">Data Validation Pass</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-mini-val">5 Lots</div>
+              <div class="stat-mini-lbl">Active Isolation</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         SECTION 2 — BURN-IN DATA TABLE
+         ======================================================== -->
+    <section id="section-burnin" class="dashboard-section">
+      <div class="panel-card">
+        <div class="table-header-bar">
+          <div class="table-title-group">
+            <h2 class="panel-title">Interactive Burn-In Dataset</h2>
+            <p class="panel-subtitle">Stress telemetry records logged across 0h, 24h, 96h, and 168h standard burn-in intervals.</p>
+          </div>
+          
+          <div class="table-filter-bar">
+            <input type="text" id="tableSearchInput" placeholder="Filter by Component or Lot..." class="table-search-input">
+            <select id="tableFilterStatus" class="table-filter-select" aria-label="Filter by status">
+              <option value="ALL">All Statuses</option>
+              <option value="Normal">Normal Only</option>
+              <option value="Warning">Warning Only</option>
+              <option value="Anomalous">Anomalous Only</option>
+            </select>
+            <div class="record-counter" id="recordCountBadge">20 records loaded</div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="burnin-data-table" id="burninDataTable">
+            <thead>
+              <tr>
+                <th>Component ID</th>
+                <th>Lot</th>
+                <th>Time</th>
+                <th>Temperature</th>
+                <th>Voltage</th>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Datasheet Limit</th>
+                <th>Peer Lot Avg</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="burninTableBody">
+              <!-- Populated dynamically by script.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer-legend">
+          <div class="legend-item"><span class="badge-status-dot normal"></span> Normal (≤ 20% deviation)</div>
+          <div class="legend-item"><span class="badge-status-dot warning"></span> Warning (20% – 100% peer deviation)</div>
+          <div class="legend-item"><span class="badge-status-dot anomalous"></span> Anomalous (> 100% peer deviation or limit breach)</div>
+          <div class="legend-tip">Tip: Click on any row or [Inspect] button to focus and run analysis on that component.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 3 — DYNAMIC ANOMALY DETECTION
+         ======================================================== -->
+    <section id="section-anomaly" class="dashboard-section">
+      
+      <!-- Key Scientific Notice Banner -->
+      <div class="scientific-notice-banner">
+        <div class="notice-icon">🛡️</div>
+        <div class="notice-content">
+          <strong>CORE RESEARCH HYPOTHESIS: DYNAMIC PEER COMPARISON</strong>
+          <p>
+            Standard static screening fails when a component exhibits anomalous internal behavior while remaining just inside datasheet specification limits. 
+            ComponentGuard AI isolates abnormal deviations relative to the <em>same production lot baseline</em>, pinpointing latent reliability risks that static test benches miss.
+          </p>
+        </div>
+      </div>
+
+      <div class="anomaly-section-grid">
+        
+        <!-- Left: Large Chart -->
+        <div class="panel-card chart-card-lg">
+          <div class="chart-card-header">
+            <div>
+              <h2 class="panel-title">Lot Baseline vs Selected Component</h2>
+              <p class="panel-subtitle">Dynamic time-series peer comparison across burn-in intervals</p>
+            </div>
+            <div class="chart-legend-row">
+              <span class="legend-pill lot-avg"><span class="pill-dot"></span> Lot Average (<span id="legendLotVal">10.0 µA</span>)</span>
+              <span class="legend-pill comp-val"><span class="pill-dot"></span> Component <span id="legendCompId">CG-002</span> (<span id="legendCompVal">45.0 µA</span>)</span>
+              <span class="legend-pill spec-limit"><span class="pill-dot"></span> Datasheet Limit (<span id="legendSpecVal">50.0 µA</span>)</span>
+            </div>
+          </div>
+
+          <div class="canvas-chart-wrapper">
+            <canvas id="anomalyChartCanvas" width="760" height="380"></canvas>
+            <div class="chart-tooltip" id="anomalyTooltip"></div>
+          </div>
+
+          <div class="chart-footer-meta">
+            <span class="axis-lbl-x">Burn-In Elapsed Time (Hours): 0h → 24h → 96h → 168h</span>
+            <span class="axis-lbl-y" id="anomalyYAxisLabel">Unit: Parameter Value (µA)</span>
+          </div>
+        </div>
+
+        <!-- Right: Gauge + "Why Was This Flagged" Card -->
+        <div class="anomaly-sidebar">
+          
+          <!-- Animated Circular Gauge -->
+          <div class="panel-card gauge-card">
+            <div class="panel-header">
+              <h3 class="panel-title-sm">DYNAMIC ANOMALY SCORE</h3>
+              <span class="prototype-tag">0 – 100 INDEX</span>
+            </div>
+            
+            <div class="gauge-container">
+              <svg class="circular-gauge" viewBox="0 0 200 200">
+                <circle class="gauge-bg" cx="100" cy="100" r="78"/>
+                <circle class="gauge-progress" id="gaugeProgressCircle" cx="100" cy="100" r="78"/>
+              </svg>
+              <div class="gauge-center-content">
+                <div class="gauge-number" id="gaugeScoreNumber">87</div>
+                <div class="gauge-denom">/ 100</div>
+                <div class="gauge-verdict" id="gaugeVerdictLabel">HIGH ANOMALY</div>
+              </div>
+            </div>
+
+            <div class="gauge-ranges-legend">
+              <span class="grange g-normal">0–39 Normal</span>
+              <span class="grange g-warning">40–69 Warning</span>
+              <span class="grange g-danger">70–100 Anomalous</span>
+            </div>
+
+            <p class="gauge-disclaimer">Prototype anomaly scoring for demonstration.</p>
+          </div>
+
+          <!-- "Why Was This Flagged?" Explanation Card -->
+          <div class="panel-card why-flagged-card" id="whyFlaggedCard">
+            <div class="card-flag-header">
+              <span class="flag-icon">⚡</span>
+              <h3 class="flag-title">WHY WAS THIS FLAGGED?</h3>
+            </div>
+
+            <div class="flag-metrics-grid">
+              <div class="flag-metric-box">
+                <span class="fmb-lbl">Datasheet Limit</span>
+                <span class="fmb-val" id="wfLimitVal">50.0 µA</span>
+              </div>
+              <div class="flag-metric-box highlight-orange">
+                <span class="fmb-lbl">Observed Value</span>
+                <span class="fmb-val" id="wfObservedVal">45.0 µA</span>
+              </div>
+              <div class="flag-metric-box">
+                <span class="fmb-lbl">Lot Average</span>
+                <span class="fmb-val" id="wfLotAvgVal">10.0 µA</span>
+              </div>
+              <div class="flag-metric-box highlight-danger">
+                <span class="fmb-lbl">Peer Deviation</span>
+                <span class="fmb-val" id="wfPeerDevVal">+350%</span>
+              </div>
+            </div>
+
+            <div class="flag-risk-row">
+              <span class="risk-pill-label">ANOMALY RISK LEVEL:</span>
+              <span class="risk-badge-flag high" id="wfRiskBadge">HIGH</span>
+            </div>
+
+            <div class="flag-core-message" id="wfMessageText">
+              “Value remains below the absolute datasheet limit (50.0 µA) but is significantly higher than the lot baseline (10.0 µA).”
+            </div>
+
+            <div class="flag-scientific-caveat">
+              <strong>Crucial Distinction:</strong> Abnormal peer behaviour indicates elevated latent risk, but does not alone constitute physical defect proof without destructive physical analysis.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         SECTION 4 — PREDICTIVE DRIFT ANALYSIS
+         ======================================================== -->
+    <section id="section-drift" class="dashboard-section">
+      <div class="panel-card">
+        
+        <div class="drift-header-bar">
+          <div>
+            <div class="tech-sub-tag">TIME-SERIES EXTRAPOLATION</div>
+            <h2 class="panel-title">Predictive Drift Analysis</h2>
+            <p class="panel-subtitle">
+              Historical burn-in tracking (0h → 24h → 96h) and projected 168h end-of-test drift vector.
+            </p>
+          </div>
+          <span class="model-badge">PROTOTYPE PREDICTIVE MODEL</span>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="drift-stats-strip">
+          <div class="dstat-card">
+            <span class="dstat-icon">📈</span>
+            <div class="dstat-info">
+              <div class="dstat-lbl">CURRENT TREND</div>
+              <div class="dstat-val" id="driftCurrentTrend">Increasing</div>
+            </div>
+          </div>
+
+          <div class="dstat-card highlight-cyan-border">
+            <span class="dstat-icon">🎯</span>
+            <div class="dstat-info">
+              <div class="dstat-lbl">PREDICTED 168h VALUE</div>
+              <div class="dstat-val accent-cyan" id="driftPredicted168Val">42.0 µA</div>
+            </div>
+          </div>
+
+          <div class="dstat-card">
+            <span class="dstat-icon">🛡️</span>
+            <div class="dstat-info">
+              <div class="dstat-lbl">SAFE DRIFT THRESHOLD</div>
+              <div class="dstat-val" id="driftSafeThresholdVal">35.0 µA</div>
+            </div>
+          </div>
+
+          <div class="dstat-card highlight-risk-border" id="driftRiskCard">
+            <span class="dstat-icon">⚠️</span>
+            <div class="dstat-info">
+              <div class="dstat-lbl">DRIFT RISK CLASSIFICATION</div>
+              <div class="dstat-val font-danger" id="driftRiskClassification">HIGH RISK</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Large Drift Canvas Chart -->
+        <div class="canvas-chart-wrapper drift-chart-box">
+          <canvas id="driftChartCanvas" width="1080" height="400"></canvas>
+          <div class="chart-tooltip" id="driftTooltip"></div>
+        </div>
+
+        <div class="drift-chart-bottom-info">
+          <div class="drift-legend">
+            <span class="legend-pill historical"><span class="pill-dot"></span> Measured Historical (0h – 96h Solid)</span>
+            <span class="legend-pill predicted"><span class="pill-dot dashed"></span> Predicted Extrapolation (96h – 168h Dashed)</span>
+            <span class="legend-pill safety-thresh"><span class="pill-dot"></span> Safe Drift Threshold (35.0 µA)</span>
+            <span class="legend-pill cutoff-pt"><span class="pill-dot line"></span> Prediction Cutoff Point (96h)</span>
+          </div>
+          <div class="drift-methodology-note">
+            <span>Deterministic regression trajectory • Enables early termination of failing components at 96h, saving 72h of thermal chamber power.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 5 — AI RISK EXPLANATION
+         ======================================================== -->
+    <section id="section-risk" class="dashboard-section">
+      <div class="panel-card">
+        
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-glyph">🧠</span>
+            <h2 class="panel-title">AI Risk Explanation</h2>
+          </div>
+          <span class="panel-badge accent-cyan">MULTI-FACTOR DECISION SUPPORT</span>
+        </div>
+
+        <p class="panel-subtitle">
+          Transparent, explainable reasoning breakdown for component screening assessment.
+        </p>
+
+        <!-- 4 Factors Grid -->
+        <div class="explanation-factors-grid">
+          
+          <div class="factor-card" id="factor1Card">
+            <div class="factor-header">
+              <span class="factor-index">01</span>
+              <span class="factor-badge" id="factor1Badge">CRITICAL</span>
+            </div>
+            <h3 class="factor-title">PEER BASELINE DEVIATION</h3>
+            <p class="factor-body" id="factor1Text">
+              Component is significantly above the lot baseline (+350% shift from 10.0 µA lot average).
+            </p>
+            <div class="factor-indicator-bar"><div class="fib-fill" id="fib1" style="width: 88%; background: #ff3366;"></div></div>
+          </div>
+
+          <div class="factor-card" id="factor2Card">
+            <div class="factor-header">
+              <span class="factor-index">02</span>
+              <span class="factor-badge" id="factor2Badge">WARNING</span>
+            </div>
+            <h3 class="factor-title">DRIFT TRAJECTORY RATE</h3>
+            <p class="factor-body" id="factor2Text">
+              Parameter value is increasing continuously across consecutive burn-in thermal intervals.
+            </p>
+            <div class="factor-indicator-bar"><div class="fib-fill" id="fib2" style="width: 72%; background: #ffb300;"></div></div>
+          </div>
+
+          <div class="factor-card" id="factor3Card">
+            <div class="factor-header">
+              <span class="factor-index">03</span>
+              <span class="factor-badge" id="factor3Badge">HIGH RISK</span>
+            </div>
+            <h3 class="factor-title">FUTURE THRESHOLD CROSSING</h3>
+            <p class="factor-body" id="factor3Text">
+              Predicted 168h value (42.0 µA) crosses the safe drift operating threshold (35.0 µA).
+            </p>
+            <div class="factor-indicator-bar"><div class="fib-fill" id="fib3" style="width: 90%; background: #ff3366;"></div></div>
+          </div>
+
+          <div class="factor-card" id="factor4Card">
+            <div class="factor-header">
+              <span class="factor-index">04</span>
+              <span class="factor-badge success">HIGH CONFIDENCE</span>
+            </div>
+            <h3 class="factor-title">INFERENCE CONFIDENCE</h3>
+            <p class="factor-body" id="factor4Text">
+              Prototype analysis confidence: <strong>91%</strong> based on 4-interval telemetry convergence.
+            </p>
+            <div class="factor-indicator-bar"><div class="fib-fill" id="fib4" style="width: 91%; background: #00f5d4;"></div></div>
+          </div>
+
+        </div>
+
+        <!-- Overall Risk & Recommendation Box -->
+        <div class="risk-recommendation-box" id="riskRecBox">
+          <div class="rrb-left">
+            <div class="rrb-risk-label">OVERALL SCREENING RISK:</div>
+            <div class="rrb-risk-badge high" id="rrbRiskBadge">HIGH RISK</div>
+            <div class="rrb-sub" id="rrbCompTarget">Target: CG-002 (LOT-A01)</div>
+          </div>
+
+          <div class="rrb-divider"></div>
+
+          <div class="rrb-right">
+            <div class="rrb-rec-label">RECOMMENDED ACTION (DECISION SUPPORT):</div>
+            <div class="rrb-rec-text" id="rrbRecText">
+              “Keep component under review and perform further electrical investigation.”
+            </div>
+            <p class="rrb-disclaimer">
+              <strong>Human Oversight Requirement:</strong> AI flags the component for QA review. AI provides risk-based decision support. Final screening decision remains with the QA engineer.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 6 — QA ENGINEER DECISION
+         ======================================================== -->
+    <section id="section-qa" class="dashboard-section">
+      <div class="panel-card qa-decision-card">
+        
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-glyph">⚖</span>
+            <h2 class="panel-title">QA ENGINEER DECISION</h2>
+          </div>
+          <span class="qa-badge">FLIGHT-READINESS SCREENING SIGN-OFF</span>
+        </div>
+
+        <div class="qa-active-context-bar">
+          <div class="qa-ctx-item">
+            <span class="qa-ctx-lbl">Component Under Review</span>
+            <span class="qa-ctx-val accent-cyan" id="qaTargetComp">CG-003</span>
+          </div>
+          <div class="qa-ctx-item">
+            <span class="qa-ctx-lbl">Assessed Risk</span>
+            <span class="qa-ctx-val font-danger" id="qaTargetRisk">HIGH</span>
+          </div>
+          <div class="qa-ctx-item">
+            <span class="qa-ctx-lbl">Primary Risk Drivers</span>
+            <span class="qa-ctx-val" id="qaTargetReason">High peer deviation + increasing drift + predicted threshold crossing</span>
+          </div>
+        </div>
+
+        <!-- Action Decision Station -->
+        <div class="qa-button-station">
+          <div class="qa-button-col">
+            <button class="btn-decision btn-accept" id="btnQaAccept">
+              <span class="decision-icon">✓</span>
+              <span class="decision-title">ACCEPT</span>
+              <span class="decision-desc">Pass component for flight assembly</span>
+            </button>
+          </div>
+
+          <div class="qa-button-col">
+            <button class="btn-decision btn-review" id="btnQaReview">
+              <span class="decision-icon">👁</span>
+              <span class="decision-title">KEEP UNDER REVIEW</span>
+              <span class="decision-desc">Hold for extended electrical verification</span>
+            </button>
+          </div>
+
+          <div class="qa-button-col">
+            <button class="btn-decision btn-retest" id="btnQaRetest">
+              <span class="decision-icon">↺</span>
+              <span class="decision-title">RETEST</span>
+              <span class="decision-desc">Return to burn-in thermal chamber</span>
+            </button>
+          </div>
+
+          <div class="qa-button-col">
+            <button class="btn-decision btn-reject" id="btnQaReject">
+              <span class="decision-icon">✕</span>
+              <span class="decision-title">REJECT</span>
+              <span class="decision-desc">Screen out from aerospace lot payload</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback Confirmation Banner -->
+        <div class="decision-result-banner hidden" id="decisionResultBanner">
+          <div class="drb-icon" id="drbIcon">✓</div>
+          <div class="drb-content">
+            <h4 class="drb-heading" id="drbHeading">DECISION RECORDED: ACCEPTED</h4>
+            <p class="drb-detail" id="drbDetail">Component signed off by QA Engineer for aerospace lot qualification.</p>
+            <div class="drb-meta" id="drbMeta">Timestamp: 2026-09-29 16:05:00 UTC • Operator: QA_LEAD_ISRO_04</div>
+          </div>
+        </div>
+
+        <!-- QA Decision Audit Log -->
+        <div class="qa-audit-log-section">
+          <div class="qa-audit-header">
+            <h3 class="panel-title-sm">SCREENING AUDIT TRAIL</h3>
+            <span class="audit-counter" id="auditCountBadge">1 Decision Recorded</span>
+          </div>
+          <div class="table-container audit-table-wrapper">
+            <table class="audit-table" id="qaAuditTable">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Component</th>
+                  <th>Lot</th>
+                  <th>AI Risk</th>
+                  <th>QA Action</th>
+                  <th>Justification / Status</th>
+                  <th>Engineer ID</th>
+                </tr>
+              </thead>
+              <tbody id="qaAuditTableBody">
+                <tr>
+                  <td>2026-09-29 15:40</td>
+                  <td>CG-001</td>
+                  <td>LOT-A01</td>
+                  <td><span class="badge-status-dot normal"></span> Low</td>
+                  <td><span class="badge-audit accept">ACCEPTED</span></td>
+                  <td>Within nominal 10 µA peer distribution envelope</td>
+                  <td>QA_ENG_ISRO</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="qa-footer-disclaimer">
+          <span class="warning-triangle">⚠</span>
+          <span>AI provides risk-based decision support. Final screening decision remains strictly with the QA engineer in compliance with ISRO mission safety guidelines.</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         TECHNICAL DETAILS PANEL / METHODOLOGY
+         ======================================================== -->
+    <section id="section-methodology" class="dashboard-section">
+      <div class="panel-card methodology-card">
+        
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-glyph">📖</span>
+            <h2 class="panel-title">Model & Methodology Specifications</h2>
+          </div>
+          <span class="panel-badge">ISRO RESEARCH ARCHITECTURE</span>
+        </div>
+
+        <p class="panel-subtitle">
+          Mathematical formulation and explainability framework underpinning the ComponentGuard AI prototype.
+        </p>
+
+        <div class="methodology-modules-grid">
+          
+          <!-- Module A -->
+          <div class="method-card">
+            <div class="method-header">
+              <span class="method-tag">MODULE A</span>
+              <h3>Dynamic Anomaly Detection</h3>
+            </div>
+            <ul class="method-list">
+              <li>
+                <strong>Lot / Peer Comparison:</strong> Computes the dynamically normalized baseline $\mu_{lot}(t)$ and median deviation across all active dies in the same production wafer/lot.
+              </li>
+              <li>
+                <strong>Robust Deviation Analysis:</strong> Flags components exceeding peer statistical envelopes even if they remain strictly within absolute datasheet limits ($\text{Value} \le 50.0\,\mu\text{A}$).
+              </li>
+              <li>
+                <strong>Prototype Anomaly Score:</strong>
+                <div class="formula-block">
+                  $\text{Score} = \min\left(100, \frac{|x_i(t) - \mu_{lot}(t)|}{\mu_{lot}(t)} \times 25\right)$
+                </div>
+                Yields 0–39 (Normal), 40–69 (Warning), 70–100 (Anomalous).
+              </li>
+            </ul>
+          </div>
+
+          <!-- Module B -->
+          <div class="method-card">
+            <div class="method-header">
+              <span class="method-tag">MODULE B</span>
+              <h3>Predictive Drift Analysis</h3>
+            </div>
+            <ul class="method-list">
+              <li>
+                <strong>Historical Time-Series:</strong> Evaluates burn-in parameter samples at $t \in \{0\text{h}, 24\text{h}, 96\text{h}\}$ to calculate velocity $dx/dt$.
+              </li>
+              <li>
+                <strong>Deterministic Extrapolation:</strong> Evaluates rate of change across thermal stress states (125°C) to predict $t=168\text{h}$ value before completing the full burn-in cycle.
+              </li>
+              <li>
+                <strong>Safety Threshold Comparison:</strong> Compares predicted 168h value against safe operational boundary ($35.0\,\mu\text{A}$), enabling 72-hour early screening termination.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Module C -->
+          <div class="method-card">
+            <div class="method-header">
+              <span class="method-tag">EXPLAINABILITY</span>
+              <h3>Human-in-the-Loop Decision Support</h3>
+            </div>
+            <ul class="method-list">
+              <li>
+                <strong>Peer Deviation Factor:</strong> Quantifies exact percentage divergence relative to sister components.
+              </li>
+              <li>
+                <strong>Drift Trend Acceleration:</strong> Evaluates whether parametric degradation is accelerating or plateauing.
+              </li>
+              <li>
+                <strong>Risk Reasoning:</strong> Synthesizes multiple physical failure modes into understandable plain-text engineering rationales.
+              </li>
+              <li>
+                <strong>Decision Sovereignty:</strong> Preserves final screening authority for qualified QA personnel.
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <strong>ComponentGuard AI</strong>
+        <span class="footer-sep">•</span>
+        <span>SIH26170</span>
+        <span class="footer-sep">•</span>
+        <span>Smart Automation</span>
+        <span class="footer-sep">•</span>
+        <span>ISRO</span>
+      </div>
+      <div class="footer-right">
+        <span>Prototype Demonstration</span>
+        <span class="footer-quote">“AI-assisted screening intelligence for high-reliability component testing”</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
